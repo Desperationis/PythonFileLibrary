@@ -15,21 +15,48 @@ class Reader:
             self.lines = self.file.readlines()
             self.currentLine = 0
 
+    # Resets the reader's cursor to the top.
+    def ResetReader(self):
+        if self.canParse:
+            self.currentLine = 0
+
     # Returns whether or not the parse has reached the end of the file.
     def ReachedEnd(self):
         return self.currentLine == len(self.lines) - 1
 
-    # Returns the stripped string of the current line.
+    # Returns the current line.
     def GetCurrentLine(self):
-        return self.lines[self.currentLine].strip()
+        if self.canParse:
+            return self.lines[self.currentLine]
+        return "Can't get line; File not opened."
 
-    # Returns the next line by skipping spaces.
+    # View the next line without commiting.
+    def PeekNextLine(self):
+        nextLine = min(self.currentLine + 1, len(self.lines) - 1)
+        return self.lines[nextLine]
+
+    # Returns the next line
     def GetNextLine(self):
-        # Read next non-null lines
-        self.currentLine += 1
-        self.currentLine = min(self.currentLine, len(self.lines) - 1)
+        if self.canParse:
+            # Read next line
+            self.SkipLine()
+            self.currentLine = min(self.currentLine, len(self.lines) - 1)
 
-        while len(self.GetCurrentLine()) == 0 and not self.ReachedEnd():
-            self.currentLine += 1
+            return self.GetCurrentLine()
 
-        return self.GetCurrentLine()
+        return "Can't get line; File not opened."
+
+    # Yield function that spits out the lines of the file.
+    def CleanRead(self):
+        # Function that yields the next non-null line
+        if self.canParse:
+            yield self.GetCurrentLine()
+
+            while not self.ReachedEnd():
+                yield self.GetNextLine()
+        else:
+            yield "Cannot parse file"
+
+    # Skips a number of lines (negative or positive)
+    def SkipLine(self, amount = 1):
+        self.currentLine += amount

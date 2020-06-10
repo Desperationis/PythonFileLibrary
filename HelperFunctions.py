@@ -23,10 +23,16 @@ def OpenFileSafely(fileName, mode, raiseError):
 
             return OpenFileSafely(fileName, mode, False)
 
-# Checks if at least one object in an array are equal to another object.
+# Checks if at least one object in an array is equal to another object.
 def OneIs(objects, value):
     for obj in objects:
         if obj is value:
             return True
 
     return False
+
+
+def RemoveElements(elements, line):
+    for element in elements:
+        line = line.replace(element, "")
+    return line
