@@ -35,7 +35,7 @@ class Reader:
         nextLine = min(self.currentLine + 1, len(self.lines) - 1)
         return self.lines[nextLine]
 
-    # Returns the next line
+    # Returns the next line. CleanRead() will skip ahead this line.
     def GetNextLine(self):
         if self.canParse:
             # Read next line
