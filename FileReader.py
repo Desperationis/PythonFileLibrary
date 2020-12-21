@@ -1,11 +1,11 @@
 from HelperFunctions import *
 
-"""
-    Reader.py
+class FileReader:
+    """
+        Class for reading files.
+    """
 
-    Reads a file!
-"""
-class Reader:
+
     def __init__(self, fileName):
         self.fileName = fileName
         self.file = OpenFileSafely(fileName, "r", True)
