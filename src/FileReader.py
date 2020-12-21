@@ -8,7 +8,11 @@ class FileReader:
     bounds, it will return either the first or last line of the file.
     """
     
-    def __init__(self, fileName):
+    def __init__(self, fileName : str):
+
+        #self.cursorPosition = 0
+        
+
         self.fileName = fileName
         self.file = OpenFileSafely(fileName, "r", True)
         self.canParse = self.file is not None
@@ -17,14 +21,42 @@ class FileReader:
             self.lines = self.file.readlines()
             self.currentLine = 0
 
+
+    def ResetCursor(self):
+        # TODO: Make a function that resets the cursor to the top of the page. 
+        pass
+
+    def Read(self) -> str:
+        # TODO: Make a function that yields the current line while changing
+        # cursor position. 
+        pass
+
+    def MoveCursorUp(self, amount : int = 1):
+        # TODO: Implement a func that moves the cursor up from a positive
+        # integer, even when reading a file. If the amount reaches the top of a
+        # file, set the cursor to the top of the file. 
+        pass
+
+    def MoveCursorDown(self, amount : int = 1):
+        # TODO: Implement a func that moves the cursor down from a positive
+        # integer, even when reading a file. If the amount reaches the bottom of
+        # the file, set the cursor to the top of the file. 
+        pass
+
+    def ReachedEnd(self) -> bool:
+        # TODO: Check when we have reached the end of the file.
+        pass
+
+
+
     # Resets the reader's cursor to the top.
     def ResetReader(self):
         if self.canParse:
             self.currentLine = 0
 
     # Returns whether or not the parse has reached the end of the file.
-    def ReachedEnd(self):
-        return self.currentLine == len(self.lines) - 1
+    #def ReachedEnd(self):
+     #   return self.currentLine == len(self.lines) - 1
 
     # Returns the current line.
     def GetCurrentLine(self):
