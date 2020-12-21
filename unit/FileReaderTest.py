@@ -1,6 +1,6 @@
 import unittest
 
-class ReaderTest(unittest.TestCase):
+class FileReaderTest(unittest.TestCase):
     def setUp(self):
         # Init func for every test
         pass
