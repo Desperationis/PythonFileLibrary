@@ -87,7 +87,3 @@ class FileReaderTest(unittest.TestCase):
         pass
 
 
-
-# Only run this script if we delibrately wanted to
-if __name__ == "__main__":
-    unittest.main()
