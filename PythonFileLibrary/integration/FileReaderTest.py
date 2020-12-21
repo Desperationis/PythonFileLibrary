@@ -103,6 +103,3 @@ class FileReaderTest(unittest.TestCase):
                 break
 
 
-
-
-
