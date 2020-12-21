@@ -1,66 +1,183 @@
 from PythonFileLibrary.src.HelperFunctions import OpenFileSafely
+import os
+import queue
 
 class FileReader:
-    """Provides an interface to read a cached text file.
+    """A line-by-line file reader with cursor manipulation. 
 
     Cached text file can be read through cursor manipulation, where the cursor
     can be moved up or down to return the current line. If the cursor is out of
     bounds, it will return either the first or last line of the file.
 
     Attributes:
-        cursorPosition: The # of the current line the cursor is on.
+        None
     """
     
-    def __init__(self, fileName : str = "", fileList : [str] = []):
-        self.cursorPosition = 0
-        self._filename = None
-        self._fileContents = []
+    def __init__(self, fileName : str, fileList : [str] = []):
+        """Creates a FileReader instance from either a file or cached list.
+
+        Args:
+            fileName: 
+                The absolute or relative location of a .txt or similar file to
+                import. If fileList is defined as well, this will simply set the
+                fileName. 
+            fileList: 
+                Optional; A list of strings that make up a file. If this is defined,
+                it will take precidence over fileName and a deep copy will occur. 
         
+        Raises:
+            FileNotFoundError if the imported file was not found.
+        """
 
-    def _CacheFile(self, location):
-        # TODO: Open a file and cache it into _fileContents. If if it doesn't
-        # exist, throw an exception
-        pass
+        self._cursorPosition = 0
+        self._fileName = os.path.basename(fileName)
+        self._applyCursorChange = False
 
-    @staticmethod
-    def ValidFileType(fileName: str) -> bool:
-        # TODO: Check if a file can be read using this class via checking
-        # for ASCII encoding. 
-        pass
+        if len(fileList) > 0:
+            self._fileContents = [i for i in fileList]
+        else:
+            self._fileContents = self._CacheFile(fileName)
+
+
+
+    def _CacheFile(self, location: str) -> [str]:
+        file = open(location, "r")
+        return [line for line in file]
+
 
     def GetFilename(self) -> str:
-        # TODO: Return the filename of the file.
-        pass
+        """
+        Returns:
+            The name of the file, which is the basename of the directory
+            imported. If the file was imported using a cached list, this will
+            still return the basename of the fileName specified in __init__.
+        """
+        return self._fileName
+
+
 
     def GetFileLength(self) -> int:
-        # TODO: Pass length of cache. 
-        pass
+        """
+        Returns:
+            The length of the file (determined by the number of \n) as an
+            integer. 
+        """
+        return len(self._fileContents)
+
+
+
+    def GetCurrentCursorPosition(self) -> int:
+        """
+        Returns:
+            The current line of the cursor, from 0 to GetFileLength() - 1.
+        """
+        return self._cursorPosition
+
+
+
+    def GetCurrentLine(self) -> str:
+        """
+        Returns:
+            The current line the cursor is on as a str.
+        """
+        return self._fileContents[self._cursorPosition]
+
+
 
     def ResetCursor(self):
-        # TODO: Make a function that resets the cursor to the top of the page. 
-        pass
+        """Resets the cursor to be at the top of the file."""
+        self._cursorPosition = 0
 
-    def Read(self) -> str:
-        # TODO: Make a function that yields the cached current line while
-        # changing cursor position. 
-        pass
+    
+
+    def Read(self, queued: bool = False) -> str:
+        """Yields the current line and every line after it until it reaches the
+        end of the file. 
+
+        During execution, the cursor position can be manipulated by
+        MoveCursorUp(), MoveCursorDown(), or MoveCursorTo() in order to move the
+        cursor to anywhere. By doing this, the next line yielded will be the
+        current line at that position, where it will continue execution
+        normally. 
+
+        If more than one command of MoveCursorUp(), MoveCursorDown(), or
+        MoveCursorTo() is executed in the loop, the cumulative total of those
+        commands is the location of the next line to be yielded. 
+
+        E.x.
+
+            for line in fileReader.Read():
+                fileReader.MoveCursorTo(6)
+                fileReader.MoveUp(3)
+                fileReader.MoveDown(1)
+
+        ... would result in the end cursor position to be set to 4 every loop,
+        causing the same line to be returned each loop. 
+        """
+
+        yield self.GetCurrentLine()
+        while not self.ReachedEnd():
+            if not self._applyCursorChange:
+                self.MoveCursorDown()
+            else:
+                self._applyCursorChange = False
+
+            yield self.GetCurrentLine()
 
     def __iter__(self) -> str:
-        # TODO: Pump Read() through here
-        pass
+        return self.Read()
 
-    def MoveCursorUp(self, amount : int = 1):
-        # TODO: Implement a func that moves the cursor up from a positive
-        # integer, even when reading a file. If the amount reaches the top of a
-        # file, set the cursor to the top of the file. 
-        pass
 
-    def MoveCursorDown(self, amount : int = 1):
-        # TODO: Implement a func that moves the cursor down from a positive
-        # integer, even when reading a file. If the amount reaches the bottom of
-        # the file, set the cursor to the top of the file. 
-        pass
+    def MoveCursorTo(self, line: int):
+        """Moves the cursor to any line in the file. 
+
+        Args:
+            line: The # of the line you want to go to starting from 0 and ending at
+            GetFileLength() - 1. Any values of out bound of this range will be clamped. 
+        """
+
+        self._cursorPosition = min(max(line, 0), self.GetFileLength() - 1)
+        self._applyCursorChange = True
+
+
+
+    def MoveCursorUp(self, amount: int = 1):
+        """Moves the cursor up by a specific amount.
+
+        Args:
+            amount: 
+                Optional; The number of lines to move up by. If this amount would
+                exceed the top of the file, the cursor is moved to the very first
+                line. If it's <=0, then nothing will occur. 
+        """
+
+        if amount > 0:
+            self._cursorPosition = max(self._cursorPosition - amount, 0)
+            self._applyCursorChange = True
+
+
+
+    def MoveCursorDown(self, amount: int = 1):
+        """Moves the cursor down by a specific amount.
+
+        Args:
+            amount: 
+                Optional; The number of lines to move down by. If this amount would
+                exceed the bottom of the file, the cursor is moved to the very last
+                line. If it's <=0, then nothing will occur. 
+        """
+
+        if amount > 0:
+            self._cursorPosition = min(self._cursorPosition + amount, self.GetFileLength() - 1)
+            self._applyCursorChange = True
+
+            
 
     def ReachedEnd(self) -> bool:
-        # TODO: Check when we have reached the end of the file.
-        pass
+        """Whether or not the cursor is at the very last line.
+
+        Returns:
+            True if the cursor is at the last line, False otherwise.
+        """
+
+        return self._cursorPosition == self.GetFileLength() - 1
