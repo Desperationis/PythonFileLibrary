@@ -93,7 +93,7 @@ class FileReader:
 
     
 
-    def Read(self, queued: bool = False) -> str:
+    def Read(self) -> str:
         """Yields the current line and every line after it until it reaches the
         end of the file. 
 
