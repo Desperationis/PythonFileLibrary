@@ -1,4 +1,4 @@
-from PythonFileLibrary.src.FileReader import *
+from PythonFileLibrary.src.FileReader import FileReader
 import unittest
 
 class FileReaderTest(unittest.TestCase):
