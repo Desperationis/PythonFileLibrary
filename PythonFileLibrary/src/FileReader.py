@@ -42,7 +42,9 @@ class FileReader:
 
     def _CacheFile(self, location: str) -> [str]:
         file = open(location, "r")
-        return [line for line in file]
+        cached = [line for line in file]
+        file.close()
+        return cached
 
 
     def GetFilename(self) -> str:
