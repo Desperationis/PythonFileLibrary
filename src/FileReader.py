@@ -1,4 +1,4 @@
-from HelperFunctions import *
+from .HelperFunctions import OpenFileSafely
 
 class FileReader:
     """Provides an interface to read a cached text file.

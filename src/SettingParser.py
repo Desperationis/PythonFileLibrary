@@ -1,11 +1,11 @@
-from Reader import *
+from .FileReader import FileReader
 
 """
     SettingParser.py
 
     Parses a setup.txt for information.
 """
-class SettingParser(Reader):
+class SettingParser(FileReader):
     def __init__(self):
         super().__init__("setup.txt")
 
