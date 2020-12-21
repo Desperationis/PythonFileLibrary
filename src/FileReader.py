@@ -6,8 +6,6 @@ class FileReader:
     Cached text file can be read through cursor manipulation, where the cursor
     can be moved up or down to return the current line. If the cursor is out of
     bounds, it will return either the first or last line of the file.
-
-
     """
     
     def __init__(self, fileName):
