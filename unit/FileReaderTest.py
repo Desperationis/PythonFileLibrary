@@ -1,3 +1,4 @@
+from PythonFileLibrary.src.FileReader import *
 import unittest
 
 class FileReaderTest(unittest.TestCase):

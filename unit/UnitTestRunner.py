@@ -1,11 +1,11 @@
-from ReaderTest import *
-from RecursiveScannerTest import *
+from PythonFileLibrary.unit.FileReaderTest import FileReaderTest
+from PythonFileLibrary.unit.RecursiveScannerTest import RecursiveScannerTest
 import unittest
 
 def ReaderSuite():
     readerSuite = unittest.suite.TestSuite()
-    readerSuite.addTest(ReaderTest("testA"))
-    readerSuite.addTest(ReaderTest("testB"))
+    readerSuite.addTest(FileReaderTest("testA"))
+    readerSuite.addTest(FileReaderTest("testB"))
     return readerSuite
 
 

@@ -1,4 +1,4 @@
-from .HelperFunctions import OpenFileSafely
+from PythonFileLibrary.src.HelperFunctions import OpenFileSafely
 
 class FileReader:
     """Provides an interface to read a cached text file.

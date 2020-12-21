@@ -1,4 +1,4 @@
-from .FileReader import FileReader
+from PythonFileLibrary.src.FileReader import FileReader
 
 """
     SettingParser.py
