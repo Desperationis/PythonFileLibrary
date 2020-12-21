@@ -68,7 +68,7 @@ class FileReader:
 
 
 
-    def GetCurrentCursorPosition(self) -> int:
+    def GetCursorPosition(self) -> int:
         """
         Returns:
             The current line of the cursor, from 0 to GetFileLength() - 1.
