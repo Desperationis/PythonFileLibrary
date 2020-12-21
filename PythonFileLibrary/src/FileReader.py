@@ -123,8 +123,8 @@ class FileReader:
         while not self.ReachedEnd():
             if not self._applyCursorChange:
                 self.MoveCursorDown()
-            else:
-                self._applyCursorChange = False
+                
+            self._applyCursorChange = False
 
             yield self.GetCurrentLine()
 
