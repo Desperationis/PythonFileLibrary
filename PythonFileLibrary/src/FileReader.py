@@ -89,6 +89,7 @@ class FileReader:
     def ResetCursor(self):
         """Resets the cursor to be at the top of the file."""
         self._cursorPosition = 0
+        self._applyCursorChange = True
 
     
 
@@ -117,6 +118,7 @@ class FileReader:
         causing the same line to be returned each loop. 
         """
 
+        self._applyCursorChange = False
         yield self.GetCurrentLine()
         while not self.ReachedEnd():
             if not self._applyCursorChange:
