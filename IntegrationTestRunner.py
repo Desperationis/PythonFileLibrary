@@ -15,7 +15,16 @@ def FileReaderSuite():
     readerSuite.addTest(FileReaderTest("test_CursorManipulation"))
     return readerSuite
 
+def RecursiveSuite():
+    recursiveSuite = unittest.suite.TestSuite()
+    recursiveSuite.addTest(RecursiveScannerTest("test_TXT"))
+    recursiveSuite.addTest(RecursiveScannerTest("test_ALL"))
+    recursiveSuite.addTest(RecursiveScannerTest("test_MP3"))
+    recursiveSuite.addTest(RecursiveScannerTest("test_None"))
+    return recursiveSuite
+
 
 if __name__ == '__main__':
     runner = unittest.TextTestRunner()
     runner.run(FileReaderSuite())
+    runner.run(RecursiveSuite())
