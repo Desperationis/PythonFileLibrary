@@ -1,6 +1,4 @@
-from PythonFileLibrary.src.HelperFunctions import OpenFileSafely
 import os
-import queue
 
 class FileReader:
     """A line-by-line file reader with cursor manipulation. 
