@@ -3,7 +3,14 @@ import os
 class RecursiveScanner:
     """Recursively scans a directory for files of a specific extension."""
 
-    def __init__(self, directory):
+    def __init__(self, directory: str):
+        """Creates a RecursiveScanner instance from a directory. 
+
+        Args:
+            directory: The location of a directory to recursively scan given as
+            a string. After this has been set, you cannot modify it. 
+        """
+
         self._directory = directory
     
     def _Scan(self, directory: str, whitelist: [str], maxDepth: int = 0) -> [str]:
