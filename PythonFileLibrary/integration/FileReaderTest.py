@@ -1,4 +1,4 @@
-from PythonFileLibrary.src.FileReader import FileReader
+from PythonFileLibrary.FileReader import FileReader
 from os.path import join
 import unittest
 

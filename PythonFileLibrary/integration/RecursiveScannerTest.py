@@ -1,4 +1,4 @@
-from PythonFileLibrary.src.RecursiveScanner import RecursiveScanner
+from PythonFileLibrary.RecursiveScanner import RecursiveScanner
 from os.path import join
 import unittest
 
